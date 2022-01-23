@@ -119,22 +119,28 @@ def play_qlearning(env, agent, train=False, render=False):
     return episode_reward
 
 
-render = False
-# Deep Q-Network Solving Optimal Policy
-net_kwargs = {'hidden_sizes': [64, 64], 'learning_rate': 0.001}
-agent = DQNAgent(env, net_kwargs=net_kwargs)
+def main():
+    render = False
+    # Deep Q-Network Solving Optimal Policy
+    net_kwargs = {'hidden_sizes': [64, 64], 'learning_rate': 0.001}
+    agent = DQNAgent(env, net_kwargs=net_kwargs)
 
-# traning
-episodes = 500
-episode_rewards = []
-chart = Chart()
-for episode in tqdm(range(episodes), total=episodes):
-    episode_reward = play_qlearning(env, agent, train=True, render=render)
-    episode_rewards.append(episode_reward)
-    chart.plot(episode_rewards)
+    # traning
+    episodes = 500
+    episode_rewards = []
+    chart = Chart()
+    for episode in tqdm(range(episodes), total=episodes):
+        episode_reward = play_qlearning(env, agent, train=True, render=render)
+        episode_rewards.append(episode_reward)
+        chart.plot(episode_rewards)
 
-# testing
-agent.epsilon = 0.  # Cancel exploration
-episode_rewards = [play_qlearning(env, agent) for _ in range(100)]
-print(
-    'Average round reward = {} / {} = {}'.format(sum(episode_rewards), len(episode_rewards), np.mean(episode_rewards)))
+    # testing
+    agent.epsilon = 0.  # Cancel exploration
+    episode_rewards = [play_qlearning(env, agent) for _ in range(100)]
+    print(
+        'Average round reward = {} / {} = {}'.format(sum(episode_rewards), len(episode_rewards),
+                                                     np.mean(episode_rewards)))
+
+
+if __name__ == '__main__':
+    main()
